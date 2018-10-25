@@ -5,9 +5,8 @@
 #include <QSerialPort>
 #include <QPushButton>
 
-#include <protocol.h>
-#include "JoystickPreview.h"
-#include "Compass.h"
+#include <Protocol.h>
+#include "UdpForwarder.h"
 
 #include <glm/glm.hpp>
 
@@ -64,13 +63,13 @@ private:
           QString disconnectText);
   void sendBufferContentWithReset();
   void handleFrame(Message& message);
-    void sendXBoxState(glm::vec3 leftFootPosition, glm::vec3 rightFootPosition);
+  void sendXBoxState(glm::vec3 leftFootPosition, glm::vec3 rightFootPosition);
+
 private:
   Ui::SerialTesterMainWindow *ui;
   std::unique_ptr<QSerialPort> serialPortHandle_FromSupervisor;
   std::unique_ptr<QSerialPort> serialPortHandle_ToXBoxPad;
 
-  std::unique_ptr<Compass> compass;
-  std::unique_ptr<JoystickPreview> joystickPreview;
+  std::unique_ptr<UdpForwarder> udpForwarder;
 };
 

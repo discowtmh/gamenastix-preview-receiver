@@ -2,8 +2,8 @@
 
 #include "SerialTesterMainWindow.h"
 #include "ui_SerialTesterMainWindow.h"
+#include <Protocol.h>
 #include <SystemClock.h>
-#include <protocol.h>
 #include <iostream>
 
 #include <deepModel/Treadmill.h>
@@ -25,13 +25,6 @@ SerialTesterMainWindow::SerialTesterMainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     updateAvailablePortsComboBox(*ui->availablePortsComboBox_FromSupervisor);
-    updateAvailablePortsComboBox(*ui->availablePortsComboBox_ToXBoxPad);
-
-    compass = std::make_unique<Compass>(*this->ui->compassLabel, *this->ui->compassStatus);
-    compass->update(0, false);
-
-    joystickPreview = std::make_unique<JoystickPreview>(*ui->joystickPreviewLeftCanvas,
-                                                        *ui->joystickPreviewRightCanvas);
 }
 
 SerialTesterMainWindow::~SerialTesterMainWindow()
@@ -39,9 +32,9 @@ SerialTesterMainWindow::~SerialTesterMainWindow()
     delete ui;
 }
 
-const char * getenv_or(const char * environmentVariableName, const char* defaultValue)
+const char *getenv_or(const char *environmentVariableName, const char *defaultValue)
 {
-    const char * returnValue = getenv(environmentVariableName);
+    const char *returnValue = getenv(environmentVariableName);
     return returnValue ? returnValue : defaultValue;
 }
 
@@ -99,100 +92,14 @@ void SerialTesterMainWindow::connectSerialPort(
     connect(serial.get(), &QSerialPort::readyRead, this, &SerialTesterMainWindow::readData);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-////////////////
-/// CUT HERE ///
-////////////////
-
-#define YAW_INDEX 0
-#define PITCH_INDEX 1
-#define ROLL_INDEX 2
-
-namespace {
-
-std::ostream & operator<<(std::ostream& os, const glm::vec3& v)
-{
-    os << "[" << v[0] << ", " << v[1] << ", " << v[2] << "]";
-    return os;
-
-}
-
-glm::vec3 getRotated(glm::vec3 normal, float pitchDegrees, float rollDegrees)
-{
-    auto afterRoll = glm::rotate(normal, glm::radians(rollDegrees), glm::vec3{0, 0, 1});
-    auto afterPitch = glm::rotate(afterRoll, -glm::radians(pitchDegrees), glm::vec3{1, 0, 0});
-    std::cout << normal << " " << afterRoll << " " << afterPitch << std::endl;
-    return afterPitch;
-}
-
-glm::vec3 getFootPosition(float yaw, glm::vec3 offset, glm::vec3 yawPitchRollUp, glm::vec3 yawPitchRollBottom)
-{
-    glm::vec3 pelvisToKneeNPose = {0, -0.5, 0};
-    glm::vec3 kneeToFeetNPose = {0, -0.5, 0};
-
-    return glm::rotate(offset
-            + getRotated(pelvisToKneeNPose, yawPitchRollUp[PITCH_INDEX], yawPitchRollUp[ROLL_INDEX])
-            + getRotated(kneeToFeetNPose, yawPitchRollBottom[PITCH_INDEX], yawPitchRollBottom[ROLL_INDEX]),
-        yaw,
-        glm::vec3{0, 1, 0});
-}
-
-glm::vec3 getFootPosition(float yaw, const std::vector<float> &offset, const std::vector<float> &yawPitchRollUp, const std::vector<float> &yawPitchRollBottom)
-{
-    return getFootPosition(yaw,
-                           glm::vec3{offset[0], offset[1], offset[2]},
-                           glm::vec3{yawPitchRollUp[0], yawPitchRollUp[1], yawPitchRollUp[2]},
-                           glm::vec3{yawPitchRollBottom[0], yawPitchRollBottom[1], yawPitchRollBottom[2]});
-}
-}
 
 void SerialTesterMainWindow::handleFrame(Message &message)
 {
-    static biomodel::deepModel::Model model = biomodel::deepModel::Treadmill().getModel();
-    model.update(message);
-
-    float modelYaw = model.get(Part::CRANE)[YAW_INDEX];
-
-    glm::vec3 leftFootPosition = getFootPosition(modelYaw,
-                                                 model.get(Part::LEFT_LEG_OFFSET),
-                                                 model.get(Part::LEFT_LEG_UPPER),
-                                                 model.get(Part::LEFT_LEG_LOWER));
-
-    glm::vec3 rightFootPosition = getFootPosition(modelYaw,
-                                                  model.get(Part::RIGHT_LEG_OFFSET),
-                                                  model.get(Part::RIGHT_LEG_UPPER),
-                                                  model.get(Part::RIGHT_LEG_LOWER));
-
-    joystickPreview->update(leftFootPosition[0], leftFootPosition[2], rightFootPosition[0], rightFootPosition[2]);
-    sendXBoxState(leftFootPosition, rightFootPosition);
-}
-
-#define MAX_XBOX_STICK (32767)
-
-void SerialTesterMainWindow::sendXBoxState(glm::vec3 leftFootPosition, glm::vec3 rightFootPosition)
-{
-    if (serialPortHandle_ToXBoxPad)
+    if (udpForwarder)
     {
-        char buffer[256];
-        int size = sprintf(buffer,
-                           "%d %d %d %d %d %d\n",
-                           static_cast<int>(MAX_XBOX_STICK*leftFootPosition[0]),
-                           static_cast<int>(-MAX_XBOX_STICK*leftFootPosition[2]),
-                           static_cast<int>(leftFootPosition[1]),
-                           static_cast<int>(MAX_XBOX_STICK*rightFootPosition[0]),
-                           static_cast<int>(-MAX_XBOX_STICK*rightFootPosition[2]),
-                           static_cast<int>(rightFootPosition[2]));
-        serialPortHandle_ToXBoxPad->write(QByteArray(static_cast<const char *>(buffer), size));
-        std::cout << buffer << std::endl;
+        udpForwarder->send(message);
     }
 }
-
-////////////////
-/// CUT HERE ///
-////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
 
 void SerialTesterMainWindow::readData()
 {
@@ -279,7 +186,6 @@ void SerialTesterMainWindow::on_refreshAvailablePortsButton_FromSupervisor_click
 
 void SerialTesterMainWindow::on_refreshAvailablePortsButton_ToXBoxPad_clicked()
 {
-    updateAvailablePortsComboBox(*ui->availablePortsComboBox_ToXBoxPad);
 }
 
 void SerialTesterMainWindow::on_connectButton_FromSupervisor_clicked()
@@ -289,5 +195,5 @@ void SerialTesterMainWindow::on_connectButton_FromSupervisor_clicked()
 
 void SerialTesterMainWindow::on_connectButton_ToXBoxPad_clicked()
 {
-    resetComPort(serialPortHandle_ToXBoxPad, *ui->availablePortsComboBox_ToXBoxPad, *ui->baudRateComboBox_ToXBoxPad, *ui->connectButton_ToXBoxPad, "Connect XBoxPad", "Disconnect XBoxPad");
+    //    resetComPort(serialPortHandle_ToXBoxPad, *ui->availablePortsComboBox_ToXBoxPad, *ui->baudRateComboBox_ToXBoxPad, *ui->connectButton_ToXBoxPad, "Connect XBoxPad", "Disconnect XBoxPad");
 }

@@ -1,6 +1,6 @@
-QT       += core gui widgets serialport
+QT       += core gui widgets serialport network
 
-TARGET = gamenastix-xbox-receiver
+TARGET = gamenastix-preview-receiver
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -29,11 +29,8 @@ SOURCES +=                                                      \
     deps/gamenastix-biomodel/include/Parser.cpp                 \
     deps/gamenastix-biomodel/include/Part.cpp                   \
     deps/gamenastix-biomodel/include/Type.cpp                   \
-    src/Compass.cpp                                             \
-    src/JoystickPreview.cpp                                     \
     src/SerialTesterMainWindow.cpp                              \
     src/main.cpp                                                \
-
 
 
 HEADERS +=                                                      \
@@ -48,10 +45,9 @@ HEADERS +=                                                      \
     deps/gamenastix-biomodel/include/deepModel/Model.h          \
     deps/gamenastix-biomodel/include/deepModel/Treadmill.h      \
     deps/gamenastix-protocol/include/Protocol.h                 \
-    src/Compass.h                                               \
-    src/JoystickPreview.h                                       \
     src/SerialTesterMainWindow.h                                \
     src/SystemClock.h                                           \
+    src/UdpForwarder.h                                          \
 
 
 FORMS +=                                                        \

@@ -7,18 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>732</width>
-    <height>756</height>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Gamenastix XBox Receiver (C) DiscoWTMH </string>
+   <string>Gamenastix Preview Receiver (C) DiscoWTMH </string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTextEdit" name="receivingTextEdit">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>200</y>
+      <y>80</y>
       <width>421</width>
       <height>141</height>
      </rect>
@@ -28,7 +28,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>200</y>
+      <y>80</y>
       <width>271</width>
       <height>141</height>
      </rect>
@@ -38,7 +38,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>350</y>
+      <y>230</y>
       <width>421</width>
       <height>23</height>
      </rect>
@@ -51,7 +51,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>350</y>
+      <y>230</y>
       <width>271</width>
       <height>23</height>
      </rect>
@@ -64,7 +64,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>380</y>
+      <y>260</y>
       <width>701</width>
       <height>25</height>
      </rect>
@@ -97,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>410</y>
+      <y>290</y>
       <width>701</width>
       <height>241</height>
      </rect>
@@ -145,39 +145,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>80</y>
-      <width>341</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="compassLayout">
-     <item row="0" column="1">
-      <widget class="QLabel" name="compassLabel">
-       <property name="text">
-        <string>compass</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="joystickPreviewLeftCanvas">
-       <property name="text">
-        <string>joystickLeftCanvas</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="joystickPreviewRightCanvas">
-       <property name="text">
-        <string>joystickRightCanvas</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
@@ -188,6 +155,20 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="text">
+        <string>0.0.0.0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QLineEdit" name="lineEdit_2">
+       <property name="text">
+        <string>5000</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
@@ -205,7 +186,14 @@
      <item row="0" column="2">
       <widget class="QComboBox" name="availablePortsComboBox_FromSupervisor"/>
      </item>
-     <item row="0" column="3">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>To Preview:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QComboBox" name="baudRateComboBox_FromSupervisor">
        <property name="currentText">
         <string>115200</string>
@@ -217,68 +205,38 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>To XBox Pad:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QPushButton" name="connectButton_FromSupervisor">
        <property name="text">
         <string>Connect Supervisor</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="refreshAvailablePortsButton_ToXBoxPad">
+     <item row="1" column="5">
+      <widget class="QPushButton" name="connectButton_ToPreview">
        <property name="text">
-        <string>Refresh Available Ports:</string>
+        <string>Forwoard UDP Packets</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QComboBox" name="availablePortsComboBox_ToXBoxPad"/>
-     </item>
-     <item row="1" column="3">
-      <widget class="QComboBox" name="baudRateComboBox_ToXBoxPad">
-       <property name="currentText">
-        <string>115200</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>115200</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="connectButton_ToXBoxPad">
-       <property name="text">
-        <string>Connect XBoxPad</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_5">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>660</y>
-      <width>701</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="compassStatus"/>
-     </item>
-     <item row="0" column="0">
+     <item row="0" column="3">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Compass Status:</string>
+        <string>BaudRate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Port</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Ip Address</string>
        </property>
       </widget>
      </item>
