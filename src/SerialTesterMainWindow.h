@@ -36,11 +36,9 @@ private slots:
 
   void on_refreshAvailablePortsButton_FromSupervisor_clicked();
 
-  void on_refreshAvailablePortsButton_ToXBoxPad_clicked();
-
   void on_connectButton_FromSupervisor_clicked();
 
-  void on_connectButton_ToXBoxPad_clicked();
+  void on_connectButton_ToPreview_clicked();
 
 private:
   void connectSerialPort(std::unique_ptr<QSerialPort> &serialPortHandle,
@@ -63,12 +61,10 @@ private:
           QString disconnectText);
   void sendBufferContentWithReset();
   void handleFrame(Message& message);
-  void sendXBoxState(glm::vec3 leftFootPosition, glm::vec3 rightFootPosition);
 
 private:
   Ui::SerialTesterMainWindow *ui;
   std::unique_ptr<QSerialPort> serialPortHandle_FromSupervisor;
-  std::unique_ptr<QSerialPort> serialPortHandle_ToXBoxPad;
 
   std::unique_ptr<UdpForwarder> udpForwarder;
 };

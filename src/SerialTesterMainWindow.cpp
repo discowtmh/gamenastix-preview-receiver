@@ -184,16 +184,12 @@ void SerialTesterMainWindow::on_refreshAvailablePortsButton_FromSupervisor_click
     updateAvailablePortsComboBox(*ui->availablePortsComboBox_FromSupervisor);
 }
 
-void SerialTesterMainWindow::on_refreshAvailablePortsButton_ToXBoxPad_clicked()
-{
-}
-
 void SerialTesterMainWindow::on_connectButton_FromSupervisor_clicked()
 {
     resetComPort(serialPortHandle_FromSupervisor, *ui->availablePortsComboBox_FromSupervisor, *ui->baudRateComboBox_FromSupervisor, *ui->connectButton_FromSupervisor, "Connect Supervisor", "Disconnect Supervisor");
 }
 
-void SerialTesterMainWindow::on_connectButton_ToXBoxPad_clicked()
+void SerialTesterMainWindow::on_connectButton_ToPreview_clicked()
 {
-    //    resetComPort(serialPortHandle_ToXBoxPad, *ui->availablePortsComboBox_ToXBoxPad, *ui->baudRateComboBox_ToXBoxPad, *ui->connectButton_ToXBoxPad, "Connect XBoxPad", "Disconnect XBoxPad");
+    udpForwarder = std::make_unique<UdpForwarder>(QHostAddress(ui->previewHost->text()), ui->previewPort->text().toInt());
 }

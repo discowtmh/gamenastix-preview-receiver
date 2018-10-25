@@ -156,14 +156,14 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="1" column="2">
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="previewHost">
        <property name="text">
         <string>0.0.0.0</string>
        </property>
       </widget>
      </item>
      <item row="1" column="4">
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="previewPort">
        <property name="text">
         <string>5000</string>
        </property>
@@ -215,7 +215,7 @@
      <item row="1" column="5">
       <widget class="QPushButton" name="connectButton_ToPreview">
        <property name="text">
-        <string>Forwoard UDP Packets</string>
+        <string>Forward UDP Packets</string>
        </property>
       </widget>
      </item>

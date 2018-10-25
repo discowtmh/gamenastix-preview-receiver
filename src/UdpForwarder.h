@@ -3,10 +3,10 @@
 
 #pragma once
 
+#include <Protocol.h>
 #include <QHostAddress>
 #include <QNetworkDatagram>
 #include <QUdpSocket>
-#include <Protocol.h>
 
 
 class UdpForwarder
@@ -16,15 +16,13 @@ public:
     QHostAddress host;
     uint16_t port;
 
-    UdpForwarder()
-        : udpSocket(std::make_unique<QUdpSocket>())
-        , host(QHostAddress::LocalHost)
-        , port(1234)
+    UdpForwarder(QHostAddress host = QHostAddress::LocalHost, uint16_t port = 1234)
+            : udpSocket(std::make_unique<QUdpSocket>())
+            , host(host)
+            , port(port)
     {
-
         udpSocket->connectToHost(QHostAddress::Broadcast, port);
         udpSocket->waitForConnected();
-        udpSocket->bind(port, QUdpSocket::ShareAddress);
     }
 
     void send(Message &message)
