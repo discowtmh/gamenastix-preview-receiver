@@ -191,5 +191,15 @@ void SerialTesterMainWindow::on_connectButton_FromSupervisor_clicked()
 
 void SerialTesterMainWindow::on_connectButton_ToPreview_clicked()
 {
-    udpForwarder = std::make_unique<UdpForwarder>(QHostAddress(ui->previewHost->text()), ui->previewPort->text().toInt());
+    if (udpForwarder)
+    {
+        ui->connectButton_ToPreview->setText("Forward UDP Packet");
+        udpForwarder.reset();
+    }
+    else
+    {
+        ui->connectButton_ToPreview->setText("Stop Forwarding");
+        udpForwarder = std::make_unique<UdpForwarder>(QHostAddress(ui->previewHost->text()), ui->previewPort->text().toInt());
+    }
+
 }

@@ -158,14 +158,14 @@
      <item row="1" column="2">
       <widget class="QLineEdit" name="previewHost">
        <property name="text">
-        <string>0.0.0.0</string>
+        <string>127.0.0.1</string>
        </property>
       </widget>
      </item>
      <item row="1" column="4">
       <widget class="QLineEdit" name="previewPort">
        <property name="text">
-        <string>5000</string>
+        <string>1234</string>
        </property>
       </widget>
      </item>
