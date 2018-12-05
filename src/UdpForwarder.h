@@ -21,13 +21,13 @@ public:
             , host(host)
             , port(port)
     {
-        udpSocket->connectToHost(QHostAddress::Broadcast, port);
+        udpSocket->connectToHost(QHostAddress::LocalHost, port);
         udpSocket->waitForConnected();
     }
 
     void send(Message &message)
     {
         QByteArray forwarderDatagramTyped(reinterpret_cast<const char *>(message.data()), static_cast<int>(message.size()));
-        udpSocket->writeDatagram(forwarderDatagramTyped, host, port);
+        udpSocket->writeDatagram(forwarderDatagramTyped, QHostAddress::LocalHost, port);
     }
 };

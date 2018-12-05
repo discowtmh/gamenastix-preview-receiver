@@ -157,15 +157,18 @@
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="1" column="2">
       <widget class="QLineEdit" name="previewHost">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
-        <string>0.0.0.0</string>
+        <string>localhost</string>
        </property>
       </widget>
      </item>
      <item row="1" column="4">
       <widget class="QLineEdit" name="previewPort">
        <property name="text">
-        <string>5000</string>
+        <string>1111</string>
        </property>
       </widget>
      </item>
@@ -249,7 +252,7 @@
      <x>0</x>
      <y>0</y>
      <width>732</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
